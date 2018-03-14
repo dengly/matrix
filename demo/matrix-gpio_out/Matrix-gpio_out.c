@@ -18,27 +18,42 @@ int main(int argc, char ** argv)
     if (board == BOARD_NANOPC_T2 || board == BOARD_NANOPC_T3)
         pin = GPIO_PIN(15);
     
-    if (argc == 2)
+    if (argc > 1){
         pin = GPIO_PIN(atoi(argv[1]));
+        value = atoi(argv[2]);
+        if (value % 2) {
+            value = GPIO_HIGH;
+        } else {
+            value = GPIO_LOW;
+        }
+    }
     if ((ret = exportGPIOPin(pin)) == -1) {   
         printf("exportGPIOPin(%d) failed\n", pin);
     }
     if ((ret = setGPIODirection(pin, GPIO_OUT)) == -1) {
         printf("setGPIODirection(%d) failed\n", pin);
     }
-    for (i = 0; i < STATUS_CHANGE_TIMES; i++) {
-        if (i % 2) {
-            value = GPIO_HIGH;
-        } else {
-            value = GPIO_LOW;
-        }
-        if ((ret = setGPIOValue(pin, value)) > 0) {
-            printf("%d: GPIO_PIN(%d) value is %d\n", i+1, pin, value);
-        } else {
-            printf("setGPIOValue(%d) failed\n", pin);
-        }
-        sleep(1);
+    // for (i = 0; i < STATUS_CHANGE_TIMES; i++) {
+    //     if (i % 2) {
+    //         value = GPIO_HIGH;
+    //     } else {
+    //         value = GPIO_LOW;
+    //     }
+    //     if ((ret = setGPIOValue(pin, value)) > 0) {
+    //         printf("%d: GPIO_PIN(%d) value is %d\n", i+1, pin, value);
+    //     } else {
+    //         printf("setGPIOValue(%d) failed\n", pin);
+    //     }
+    //     sleep(1);
+    // }
+
+    if ((ret = setGPIOValue(pin, value)) > 0) {
+        printf("%d: GPIO_PIN(%d) value is %d\n", i+1, pin, value);
+    } else {
+        printf("setGPIOValue(%d) failed\n", pin);
     }
+
+
     unexportGPIOPin(pin);
     return 0;
 }
