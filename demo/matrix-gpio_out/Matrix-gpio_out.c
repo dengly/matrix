@@ -16,12 +16,10 @@ int main(int argc, char ** argv)
     if (board == BOARD_NANOPC_T2 || board == BOARD_NANOPC_T3)
         pin = GPIO_PIN(15);
 
-    int cnt = sizeof(argc) / sizeof(argc[0]);
-
-    if (cnt == 2){
+    if (argc == 2){
         // 获取状态
         pin = GPIO_PIN(atoi(argv[1]));
-    } else if (cnt == 3){
+    } else if (argc == 3){
         // 设置状态
         pin = GPIO_PIN(atoi(argv[1]));
         value = atoi(argv[2]);
@@ -41,14 +39,14 @@ int main(int argc, char ** argv)
     if ((ret = setGPIODirection(pin, GPIO_OUT)) == -1) {
         printf("setGPIODirection(%d) failed\n", pin);
     }
-    if (cnt == 2){
+    if (argc == 2){
         // 获取状态
         if ((value = getGPIOValue(pin)) >= 0) {
             printf("GPIO_PIN(%d) value is %d\n", pin, value);
         } else {
             printf("getGPIOValue(%d) failed\n", pin);
         }
-    }else if (cnt == 3){
+    }else if (argc == 3){
         // 设置状态
         if ((ret = setGPIOValue(pin, value)) > 0) {
             printf("GPIO_PIN(%d) value is %d\n", pin, value);
